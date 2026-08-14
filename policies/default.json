@@ -1,0 +1,68 @@
+{
+  "version": "1",
+  "_comment": [
+    "Policy as data, not as instructions an agent may reinterpret. The authority",
+    "service evaluates this; the agent does not decide what it may do.",
+    "",
+    "Five dimensions, evaluated independently. The strictest applicable rule",
+    "governs, because a low-code change can be irreversible, a complex internal",
+    "change can be safe, a reversible action can still breach privacy, and a",
+    "well-tested action can remain unauthorised."
+  ],
+
+  "ceilings": {
+    "_comment": "The most autonomy ever available at each consequence class, whatever else holds.",
+    "R0": "A4",
+    "R1": "A3",
+    "R2": "A2",
+    "R3": "A1",
+    "R4": "A0"
+  },
+
+  "rules": [
+    {
+      "id": "irreversible-needs-a-human",
+      "when": { "reversibility": ["emit", "destroy"] },
+      "ceiling": "A1",
+      "because": "an external side effect does not come back because the commit did. Technical rollback and real-world reversibility are different questions."
+    },
+    {
+      "id": "untested-down-path",
+      "when": { "reversibility": ["migrate"], "rollbackRehearsed": false },
+      "verdict": "refuse",
+      "because": "a down path that has never been run is a down path that does not exist"
+    },
+    {
+      "id": "silent-cannot-self-authorise",
+      "when": { "observability": ["silent"] },
+      "ceiling": "A1",
+      "because": "autonomy is only safe where harm is detectable. Nobody finding out is not the same as nothing going wrong."
+    },
+    {
+      "id": "low-confidence-escalates",
+      "when": { "confidence": ["unknown"] },
+      "ceiling": "A1",
+      "because": "acting on evidence nobody would defend is not autonomy, it is a guess with a budget"
+    },
+    {
+      "id": "logs-only-caps-external-action",
+      "when": { "observability": ["logs", "dashboards"], "risk": ["R2", "R3", "R4"] },
+      "ceiling": "A2",
+      "because": "a dashboard nobody is watching detects nothing at 3am"
+    },
+    {
+      "id": "unattributed-is-refused",
+      "when": { "actor": ["", "spiffe://hr.local/unattributed"] },
+      "verdict": "refuse",
+      "because": "an action with no identity cannot be revoked, rate-limited or explained afterwards"
+    }
+  ],
+
+  "autonomy": {
+    "A0": "analyse or recommend only",
+    "A1": "prepare the action for a human to review",
+    "A2": "execute reversible internal actions within a narrow envelope",
+    "A3": "execute bounded external actions with strong assurance and monitoring",
+    "A4": "execute without per-action review, where consequences remain bounded"
+  }
+}

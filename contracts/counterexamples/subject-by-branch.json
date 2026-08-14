@@ -1,0 +1,4 @@
+{ "_type": "https://in-toto.io/Statement/v1",
+  "subject": [{ "name": "feature/billing", "digest": {} }],
+  "predicateType": "https://hr.dev/verdict/v1",
+  "predicate": { "acceptance": [], "blastRadius": { "covered": [], "uncovered": [], "failed": [] }, "risks": [] } }

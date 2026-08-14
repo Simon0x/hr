@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/decision/v1",
+  "title": "DECISION",
+  "description": "What the authority service concluded about one proposed action, and on what grounds. A decision that cannot name its policy version cannot be audited.",
+  "type": "object",
+  "required": ["action", "verdict", "policy", "dimensions", "reasons"],
+  "additionalProperties": false,
+  "properties": {
+    "action": { "type": "string", "minLength": 1 },
+    "verdict": { "enum": ["allow", "refuse", "escalate"] },
+    "policy": { "type": "string", "minLength": 1, "description": "Digest of the policy that governed this. Bound by value, not by name - a policy that changed after the decision must not silently re-describe it." },
+    "dimensions": {
+      "type": "object",
+      "required": ["risk", "reversibility", "autonomy", "confidence", "observability"],
+      "additionalProperties": false,
+      "description": "Five independent axes. Collapsing them is how a one-line change with an irreversible side effect gets waved through.",
+      "properties": {
+        "risk": { "enum": ["R0", "R1", "R2", "R3", "R4"] },
+        "reversibility": { "enum": ["revert", "flag", "expand", "migrate", "emit", "destroy"] },
+        "autonomy": { "enum": ["A0", "A1", "A2", "A3", "A4"] },
+        "confidence": { "enum": ["certain", "likely", "unknown"] },
+        "observability": { "enum": ["refuses", "alerts", "dashboards", "logs", "silent"] }
+      }
+    },
+    "reasons": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Why. A refusal with no reason cannot be argued with, and an allow with no reason cannot be reviewed." },
+    "grant": { "type": "string", "description": "Digest of the AUTHORITY_GRANT issued, when the verdict is allow." }
+  }
+}

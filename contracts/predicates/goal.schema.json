@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/goal/v1",
+  "title": "GOAL",
+  "description": "Where a human enters the system. An outcome and its envelope - not a department to run, and not a change to make.",
+  "type": "object",
+  "required": [
+    "outcome",
+    "owner",
+    "measure"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "outcome": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What must become true. Not a feature, not a task."
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The accountable human. A goal with no owner has no one to escalate to."
+    },
+    "measure": {
+      "type": "string",
+      "minLength": 1,
+      "description": "How anyone would know it happened. If this cannot be written, the goal is a wish."
+    },
+    "priority": {
+      "enum": [
+        "now",
+        "next",
+        "later"
+      ]
+    },
+    "budget": {
+      "type": "string",
+      "description": "Time, money or compute. An unbounded goal cannot be traded off against another."
+    },
+    "deadline": {
+      "type": "string"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hard limits on how it may be achieved."
+    },
+    "prohibited": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Outcomes that are failures even if the measure is met. The half nobody writes down."
+    },
+    "risk": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "description": "Consequence class, independent of reversibility - see departments/release.md."
+    },
+    "serves": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "description": "What this goal acts on, when it is not new ground. A goal closing an open register finding routes straight to Engineering - the second queue - rather than through Discovery, which decides whether to build things nobody has decided on.",
+      "properties": {
+        "findingId": {
+          "type": "string"
+        },
+        "hypothesisId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

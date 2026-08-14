@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/grant/v1",
+  "title": "AUTHORITY_GRANT",
+  "description": "Permission to take one bounded action, for a limited time. Never a standing capability - a grant that does not expire is a credential.",
+  "type": "object",
+  "required": ["action", "holder", "expires", "policy"],
+  "additionalProperties": false,
+  "properties": {
+    "action": { "type": "string", "minLength": 1 },
+    "holder": { "type": "string", "minLength": 1, "description": "Workload identity, SPIFFE-format." },
+    "delegatedBy": { "type": "string", "description": "The accountable human standing behind it. Both facts belong in the record: which agent acted, and who authorised it." },
+    "expires": { "type": "string", "minLength": 1, "description": "ISO 8601. Required, and short." },
+    "policy": { "type": "string", "minLength": 1 },
+    "conditions": { "type": "array", "items": { "type": "string" }, "description": "What must remain true. A grant whose conditions stopped holding has lapsed, whether or not it expired." },
+    "scope": { "type": "array", "items": { "type": "string" }, "description": "The narrowest set of targets that makes the action possible." }
+  }
+}

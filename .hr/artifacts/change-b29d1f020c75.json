@@ -1,0 +1,32 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "validate-constraint-bindings",
+      "digest": {
+        "gitcommit": "ad4b149f23356f939bb9c1146025830e77b7948a"
+      }
+    }
+  ],
+  "predicateType": "https://hr.dev/change/v1",
+  "predicate": {
+    "serves": {
+      "findingId": "DUR-001"
+    },
+    "rung": "revert",
+    "constraintsTouched": [
+      "A constraint needs an enforcement binding"
+    ],
+    "routed": {
+      "c": [
+        "binding climbed from check: to gate: validate:constraint-bindings"
+      ],
+      "o": [
+        "AGENTS.md Coverage section now states the number is derived"
+      ],
+      "r": [
+        "DUR-002 opened: next does not model Engineering's finding queue"
+      ]
+    }
+  }
+}

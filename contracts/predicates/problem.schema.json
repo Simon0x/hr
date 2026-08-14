@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/problem/v1",
+  "title": "PROBLEM",
+  "description": "Discovery. Who has this, when, what it costs, and what they do instead today.",
+  "type": "object",
+  "required": ["who", "when", "cost", "workaround"],
+  "additionalProperties": false,
+  "properties": {
+    "who": { "type": "string", "minLength": 1 },
+    "when": { "type": "string", "minLength": 1 },
+    "cost": { "type": "string", "minLength": 1 },
+    "workaround": { "type": "string", "description": "What they do today. Empty string means none exists - which is a claim, not an omission." }
+  }
+}

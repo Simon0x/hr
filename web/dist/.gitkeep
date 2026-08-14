@@ -1,0 +1,6 @@
+The Go binary embeds this directory (web/embed.go), so it has to exist in a
+fresh checkout or `go build ./...` fails on a pattern that matches nothing.
+
+The built SPA is not committed - `web/.gitignore` excludes everything here
+except this file. Run `npm ci && npm run build` in web/ to populate it, which
+is what deploy/hr-server/Dockerfile does before the Go build.

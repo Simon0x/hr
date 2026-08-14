@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/signal/v1",
+  "title": "SIGNAL",
+  "description": "Ops. What production said. Feeds back to Product as intent or to Engineering as a constraint.",
+  "type": "object",
+  "required": ["source", "severity", "evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "source": { "type": "string", "minLength": 1 },
+    "severity": { "enum": ["critical", "high", "medium", "low"] },
+    "evidence": { "type": "string", "minLength": 1 },
+    "rung": { "enum": ["refuses", "alerts", "dashboards", "logs", "silent"], "description": "How this was found out. silent means the customer told us." },
+    "registerFindingId": { "type": "string" }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "hr",
+  "description": "Internal operating model: how knowledge is held, how constraints are enforced, and the department procedures that run on them",
+  "owner": {
+    "name": "Simon0x"
+  },
+  "plugins": [
+    {
+      "name": "hr",
+      "source": ".",
+      "description": "Departmental operating model: knowledge layers, four ladders, and the discovery, engineering, QA, ops and audit procedures that run on them",
+      "version": "1.0.0-rc.1"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "hr",
+  "description": "Harness Runtime - a departmental operating model: knowledge layers, four ladders, and the discovery, engineering, QA, ops and audit procedures that run on them",
+  "version": "1.0.0-rc.1",
+  "author": {
+    "name": "Simon0x"
+  }
+}

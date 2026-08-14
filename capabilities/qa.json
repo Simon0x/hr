@@ -1,0 +1,7 @@
+{
+  "name": "QA",
+  "version": "1",
+  "procedure": "departments/qa.md",
+  "risk": "R0",
+  "reversibility": "revert"
+}

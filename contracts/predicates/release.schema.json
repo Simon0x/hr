@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/release/v1",
+  "title": "RELEASE",
+  "description": "Release. A release cannot state a rollback target it has not been told exists - the rung comes from the CHANGE.",
+  "type": "object",
+  "required": [
+    "servesVerdict",
+    "artifactDigest",
+    "rollbackTarget",
+    "gatesGreen",
+    "rollbackRehearsed"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "servesVerdict": {
+      "type": "string",
+      "description": "Digest of the VERDICT this acts on. Release decides; QA does not."
+    },
+    "artifactDigest": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+:[a-f0-9]+$",
+      "description": "algorithm:hex. Never a mutable tag - not :latest, not a branch."
+    },
+    "rollbackTarget": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gatesGreen": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rollbackRehearsed": {
+      "type": "boolean",
+      "description": "Whether the down path was actually run, not whether it exists. The single most-skipped fact in a release."
+    }
+  }
+}

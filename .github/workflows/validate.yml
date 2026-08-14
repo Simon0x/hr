@@ -1,0 +1,71 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      - name: Build hr
+        run: go build -o hr ./cmd/hr
+
+      - name: Go unit tests
+        run: go test ./...
+
+      - name: Manifests are well-formed and agree
+        run: ./hr validate manifest
+
+      - name: Every /hr: name resolves to a skill
+        run: ./hr validate commands
+
+      - name: Every relative link resolves
+        run: ./hr validate links
+
+      - name: Artifacts are in-toto Statements with known predicates
+        run: ./hr validate contracts
+
+      - name: The contract validator rejects what it claims to
+        run: ./hr test contracts
+
+      - name: Signing round-trips and every forgery is caught
+        run: ./hr test attestation
+
+      # Fails closed: an artifact that cannot be verified is refused, never
+      # accepted with a warning. Passes only while .hr/artifacts/ is empty.
+      - name: Artifacts are signed by a trusted key
+        run: ./hr validate attestation
+
+      - name: The ledger chain is intact
+        run: ./hr validate ledger
+
+      - name: The policy engine decides what it claims to
+        run: ./hr test authority
+
+      - name: Memory accounts for everything it holds
+        run: ./hr validate memory
+
+      # Overspend is a decision for a human, not a build break. Enforcement
+      # happens at admission via `budget check`; this only makes it visible.
+      - name: Cost per outcome
+        continue-on-error: true
+        run: ./hr budget report
+
+      # Uncovered paths are a finding, not a blocker - departments/qa.md:57.
+      # Reported so the gap is visible; never allowed to fail the build.
+      - name: Coverage over the diff
+        continue-on-error: true
+        run: ./hr impact --base origin/${{ github.base_ref || 'main' }}

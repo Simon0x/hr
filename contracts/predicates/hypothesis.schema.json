@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/hypothesis/v1",
+  "title": "HYPOTHESIS",
+  "description": "Discovery. A claim restated as a chain of because, with the rung each link rests on and the link that breaks it.",
+  "type": "object",
+  "required": ["claim", "chain", "break"],
+  "additionalProperties": false,
+  "properties": {
+    "claim": { "type": "string", "minLength": 1 },
+    "chain": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["link", "status", "rung"],
+        "additionalProperties": false,
+        "properties": {
+          "link": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["holds", "breaks", "unchecked", "blocked"] },
+          "rung": { "enum": ["revenue", "commitment", "behaviour", "stated", "analogue", "desk", "none"] },
+          "source": { "type": "string" }
+        }
+      }
+    },
+    "break": { "type": "string", "description": "The link that fails, or the empty string if none did." },
+    "pointsTo": { "type": "string", "description": "The SPEC or finding this hands to, if it survived." }
+  }
+}

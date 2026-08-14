@@ -1,0 +1,5 @@
+{ "_type": "https://in-toto.io/Statement/v1",
+  "specId": "SPEC-042",
+  "subject": [{ "name": "CHANGE-a3f", "digest": { "gitcommit": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d" } }],
+  "predicateType": "https://hr.dev/verdict/v1",
+  "predicate": { "acceptance": [], "blastRadius": { "covered": [], "uncovered": [], "failed": [] }, "risks": [] } }

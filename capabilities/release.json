@@ -1,0 +1,7 @@
+{
+  "name": "Release",
+  "version": "1",
+  "procedure": "departments/release.md",
+  "risk": "R3",
+  "reversibility": "emit"
+}

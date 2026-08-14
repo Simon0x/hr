@@ -1,0 +1,7 @@
+{
+  "name": "Product",
+  "version": "1",
+  "procedure": "departments/product.md",
+  "risk": "R0",
+  "reversibility": "revert"
+}

@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.6-pg18-trixie
+    environment:
+      POSTGRES_USER: hr
+      POSTGRES_PASSWORD: hr
+      POSTGRES_DB: hr
+    ports:
+      - "7778:5432"
+    volumes:
+      - hr-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hr -d hr"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  hr-server:
+    build:
+      context: .
+      dockerfile: deploy/hr-server/Dockerfile
+    environment:
+      HR_SERVER_DB: postgres://hr:hr@postgres:5432/hr
+    ports:
+      - "7777:7777"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  hr-postgres-data:

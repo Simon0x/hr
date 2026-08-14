@@ -1,0 +1,32 @@
+{
+  "_comment": [
+    "Public halves only. The private key lives in the CI secret HR_SIGNING_KEY and",
+    "nowhere else - not on a workstation, not in a gitignored file. An agent that",
+    "can reach the signing key can sign its own verdict, which is the arrangement",
+    "signing exists to prevent. A key derived from anything readable on the host -",
+    "a hardware id, a machine fingerprint - is a key the agent can derive too, and",
+    "cannot be rotated without replacing the host.",
+    "",
+    "To activate: run hr keygen, paste the public entry below, and set",
+    "HR_SIGNING_KEY and HR_SIGNING_KEYID as repository secrets.",
+    "",
+    "While this list is empty, hr validate attestation passes only because there",
+    "are no artifacts to verify. The moment one exists, it refuses.",
+    "",
+    "Each entry may carry notBefore, notAfter and revokedAt as RFC3339 instants.",
+    "All three are optional; a key with none is valid for all time. They are",
+    "checked against WHEN THE ARTIFACT WAS SIGNED - taken from the ledger's",
+    "`emitted` entry, which is hash-chained and so cannot be backdated - never",
+    "against now. Revoking a key therefore refuses everything it signed after the",
+    "revocation instant while leaving the legitimate history behind it verifiable.",
+    "",
+    "To rotate: add the new key with notBefore = now, set notAfter on the old key",
+    "to the same instant or later, and keep the old entry forever. Deleting it",
+    "would strand every artifact it ever signed.",
+    "",
+    "To revoke a compromised key: set revokedAt to the earliest instant you",
+    "believe it was exposed, not to now. Everything it signed from that moment on",
+    "stops verifying, which is the point."
+  ],
+  "keys": []
+}

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./docs/audit/records/**)"
+    ],
+    "allow": [
+      "Bash(bun run typecheck)",
+      "Bash(bun run typecheck *)",
+      "Bash(bun run lint)",
+      "Bash(bun run lint *)",
+      "Bash(bun run test)",
+      "Bash(bun run test *)",
+      "Bash(bun run validate:*)"
+    ]
+  }
+}

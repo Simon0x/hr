@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/event/v1",
+  "title": "EVIDENCE_EVENT",
+  "description": "One line of the append-only ledger. Artifacts say what is true; events say what happened, when, at whose hand and at what cost. Without these there is nothing for cost or evaluation to attach to.",
+  "type": "object",
+  "required": ["seq", "prev", "at", "kind", "actor"],
+  "additionalProperties": false,
+  "properties": {
+    "seq": { "type": "number", "description": "Position in the chain, from 0." },
+    "prev": { "type": "string", "description": "sha256 of the previous entry, or 64 zeroes at the head. This is what makes the log append-only in fact rather than by convention: rewriting history breaks every link after it." },
+    "at": { "type": "string", "minLength": 1, "description": "ISO 8601." },
+    "kind": {
+      "enum": ["emitted", "gate", "decision", "action", "intervention", "exception", "promotion"],
+      "description": "emitted: an artifact entered the store. gate: a deterministic check ran. decision: authority was granted or refused. action: something left the building. intervention: a human stepped in. exception: automation stopped and asked. promotion: knowledge moved up a layer."
+    },
+    "actor": { "type": "string", "minLength": 1, "description": "Workload identity, SPIFFE-format. Never a person's account - see departments/README.md on identity." },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What went in and what came out, by digest.",
+      "properties": {
+        "in": { "type": "array", "items": { "type": "string" } },
+        "out": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "goal": { "type": "string", "description": "The goal this event serves. Cost with no goal cannot be divided by an outcome." },
+    "policy": { "type": "string", "description": "Digest of the policy version that governed this event. A decision that cannot name its policy cannot be audited." },
+    "outcome": { "enum": ["ok", "refused", "failed", "escalated"] },
+    "detail": { "type": "string" },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What this event consumed. Tokens are telemetry; the business unit is cost per accepted outcome.",
+      "properties": {
+        "tokens": { "type": "number" },
+        "seconds": { "type": "number" },
+        "currency": { "type": "string" },
+        "amount": { "type": "number" },
+        "model": { "type": "string" }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["harness", "promptDigest", "tools"],
+      "description": "What the model was asked, on the entry for that invocation. Cost says an agent ran; this says what it was told to do and what it was allowed to touch. An entry that invoked a model and cannot produce this is not auditable.",
+      "properties": {
+        "harness": { "type": "string", "minLength": 1, "description": "Which agent ran it, by HR_HARNESS selector name." },
+        "promptDigest": { "type": "string", "minLength": 1, "description": "sha256 of the exact prompt text. A digest, not the text: enough to prove a claimed prompt is the one that ran, without copying step input into a committed file." },
+        "tools": { "type": "array", "items": { "type": "string" }, "description": "The tool grant the invocation ran under, each entry keeping any argument pattern it was granted with. `Bash(hr impact *)` and `Bash` are different grants, and recording the second for the first would overstate the confinement." },
+        "deniedTools": { "type": "array", "items": { "type": "string" }, "description": "Tools denied for this invocation. Deny wins over allow, so an audit that reads only the allow list reads the grant too wide." },
+        "procedure": { "type": "string", "description": "Path of the procedure the seat was told to follow." },
+        "procedureDigest": { "type": "string", "description": "sha256 of that procedure's content, so editing it later cannot silently change what this entry meant." },
+        "untrustedInput": { "type": "boolean", "description": "This invocation's prompt carried externally derived text. Whatever it produced - a signed artifact included - rests on material hr did not author. An evidence chain that cannot tell this apart from first-hand work overstates itself." }
+      }
+    }
+  }
+}

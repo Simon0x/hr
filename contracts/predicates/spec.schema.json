@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/spec/v1",
+  "title": "SPEC",
+  "description": "Product. Intent turned into criteria that are executable, because QA cannot grade prose.",
+  "type": "object",
+  "required": ["id", "serves", "intent", "acceptance"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^SPEC-[0-9]+$" },
+    "serves": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "description": "Two queues and only two, same as Engineering. A spec serving neither is a preference with a document around it, and the evidence chain is broken where nobody looks.",
+      "properties": {
+        "hypothesisId": { "type": "string" },
+        "findingId": { "type": "string" },
+        "link": { "type": "string", "description": "Which link of the hypothesis chain this spec buys evidence for. Without it, 'we shipped and usage was low' cannot separate a wrong mechanism from a bad implementation." }
+      }
+    },
+    "intent": { "type": "string", "minLength": 1, "description": "One sentence, the user-visible outcome." },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["criterion", "executable"],
+        "additionalProperties": false,
+        "properties": {
+          "criterion": { "type": "string", "minLength": 1 },
+          "executable": { "type": "string", "minLength": 1, "description": "A command, a request, or an assertion. If this cannot be written, the criterion is not ready." }
+        }
+      }
+    },
+    "outOfScope": { "type": "array", "items": { "type": "string" }, "description": "Explicit non-goals, so QA does not invent scope." }
+  }
+}

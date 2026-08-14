@@ -1,0 +1,7 @@
+{
+  "name": "Ops",
+  "version": "1",
+  "procedure": "departments/ops.md",
+  "risk": "R0",
+  "reversibility": "revert"
+}

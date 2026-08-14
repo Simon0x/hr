@@ -1,0 +1,42 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "CHANGE-a3f",
+      "digest": { "gitcommit": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d" }
+    }
+  ],
+  "predicateType": "https://hr.dev/verdict/v1",
+  "predicate": {
+    "specId": "SPEC-042",
+    "acceptance": [
+      {
+        "criterion": "POST /invoices returns 201 with an envelope",
+        "state": "met",
+        "evidence": "test/invoices.test.ts:44 red-to-green"
+      },
+      {
+        "criterion": "Proration is fair",
+        "state": "unverifiable",
+        "evidence": "not checkable as written - names a Product gap"
+      }
+    ],
+    "blastRadius": {
+      "covered": [{ "path": "src/billing/proration.ts", "gates": ["validate:money-format"] }],
+      "uncovered": [{ "path": "src/billing/invoice.ts", "watchedInProd": false }],
+      "failed": []
+    },
+    "bands": {
+      "direct": { "confidence": "certain", "status": "2 paths" },
+      "transitive": { "confidence": "likely", "status": "not implemented - import graph is band 2" },
+      "runtime": { "confidence": "unknown", "status": "no tool closes this" }
+    },
+    "risks": [
+      {
+        "what": "shared Cents type changed meaning without changing shape",
+        "why": "rounding direction now differs for negative values",
+        "confidence": "likely"
+      }
+    ]
+  }
+}

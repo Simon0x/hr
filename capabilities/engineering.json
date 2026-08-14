@@ -1,0 +1,7 @@
+{
+  "name": "Engineering",
+  "version": "1",
+  "procedure": "departments/engineering.md",
+  "risk": "R1",
+  "reversibility": "revert"
+}

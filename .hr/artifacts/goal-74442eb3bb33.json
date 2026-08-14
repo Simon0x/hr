@@ -1,0 +1,29 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "hr",
+      "digest": {
+        "gitcommit": "ad4b149"
+      }
+    }
+  ],
+  "predicateType": "https://hr.dev/goal/v1",
+  "predicate": {
+    "outcome": "The coverage number is derived from the constraints, not maintained by hand",
+    "serves": {
+      "findingId": "DUR-001"
+    },
+    "owner": "simon",
+    "measure": "AGENTS.md coverage matches what a script computes, and the script fails when a constraint carries no binding",
+    "priority": "now",
+    "budget": "80k tokens",
+    "constraints": [
+      "derive the target set from the files found, never a list"
+    ],
+    "prohibited": [
+      "a second place where the coverage number is written down"
+    ],
+    "risk": "R1"
+  }
+}

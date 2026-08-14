@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/outcome/v1",
+  "title": "OUTCOME",
+  "description": "What a goal actually produced. The denominator: spend divided by accepted outcomes is the only cost number that means anything, and without this there is nothing to divide by.",
+  "type": "object",
+  "required": ["goal", "accepted", "humanTouches"],
+  "additionalProperties": false,
+  "properties": {
+    "goal": { "type": "string", "minLength": 1 },
+    "accepted": { "type": "boolean", "description": "Did it meet the goal's own measure. Not whether work happened - work always happens." },
+    "measure": { "type": "string", "description": "The result against the measure the goal declared." },
+    "humanTouches": { "type": "number", "description": "How many times a person had to act. The leverage number: spend can fall while this rises, and that is not an improvement." },
+    "waitedForHumanSeconds": { "type": "number", "description": "Time the work sat idle inside an approved envelope waiting for a person." },
+    "reworked": { "type": "boolean" },
+    "rolledBack": { "type": "boolean" },
+    "sideEffects": { "type": "array", "items": { "type": "string" }, "description": "What left the building and cannot be taken back." }
+  }
+}

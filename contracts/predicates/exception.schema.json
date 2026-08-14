@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/exception/v1",
+  "title": "EXCEPTION",
+  "description": "Automation stopped and asked. A human is engaged because a decision exceeded an envelope, never because the system could not move its own work forward.",
+  "type": "object",
+  "required": ["because", "options", "recommendation", "consequence"],
+  "additionalProperties": false,
+  "properties": {
+    "because": { "type": "string", "minLength": 1 },
+    "class": {
+      "enum": ["irreducible-judgment", "missing-policy", "missing-capability", "poor-confidence", "system-defect", "one-time-novelty"],
+      "description": "Classify every exception. Only the first is meant to recur; the rest are backlog items, and an unclassified exception queue is a queue that never shortens."
+    },
+    "options": { "type": "array", "minItems": 2, "items": { "type": "string" }, "description": "At least two. One option is a notification wearing a decision's clothes." },
+    "recommendation": { "type": "string", "minLength": 1 },
+    "uncertainty": { "type": "string", "description": "What would change the recommendation. Stated honestly, this is the most useful line in the packet." },
+    "consequence": { "enum": ["R0", "R1", "R2", "R3", "R4"] },
+    "deadline": { "type": "string", "description": "When not deciding becomes a decision." },
+    "requiredAuthority": { "type": "string" },
+    "stepKey": { "type": "string", "description": "The workflow step this exception blocks, if any - lets resolution act on the step it blocked instead of only recording that a decision happened." }
+  }
+}

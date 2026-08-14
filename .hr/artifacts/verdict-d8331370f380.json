@@ -1,0 +1,81 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "validate-constraint-bindings",
+      "digest": {
+        "gitcommit": "ad4b149f23356f939bb9c1146025830e77b7948a"
+      }
+    }
+  ],
+  "predicateType": "https://hr.dev/verdict/v1",
+  "predicate": {
+    "acceptance": [
+      {
+        "criterion": "the script fails when a constraint carries no binding",
+        "state": "met",
+        "evidence": "removed the binding from the department-procedure constraint; gate reported the coverage drift 12->11 and exited 1"
+      },
+      {
+        "criterion": "AGENTS.md coverage matches what the script computes",
+        "state": "met",
+        "evidence": "stated 65% equals derived 65%; a forced 95% was rejected with both lines shown"
+      },
+      {
+        "criterion": "the target set is derived, never listed",
+        "state": "met",
+        "evidence": "git ls-files *AGENTS.md at scan time; found 2 files including the scaffold"
+      }
+    ],
+    "blastRadius": {
+      "covered": [
+        {
+          "path": "AGENTS.md",
+          "gates": [
+            "validate:constraint-bindings",
+            "validate:links"
+          ]
+        },
+        {
+          "path": "scaffold/AGENTS.md",
+          "gates": [
+            "validate:constraint-bindings"
+          ]
+        }
+      ],
+      "uncovered": [
+        {
+          "path": "scripts/lib/constraints.ts",
+          "watchedInProd": false
+        }
+      ],
+      "failed": []
+    },
+    "bands": {
+      "direct": {
+        "confidence": "certain",
+        "status": "6 paths"
+      },
+      "transitive": {
+        "confidence": "likely",
+        "status": "not implemented - impact band 2"
+      },
+      "runtime": {
+        "confidence": "unknown",
+        "status": "no production, so no runtime reach exists to miss"
+      }
+    },
+    "risks": [
+      {
+        "what": "the parser now serves two conventions",
+        "why": "a topical section that happens to contain a backticked rung in prose would be counted as a constraint",
+        "confidence": "likely"
+      },
+      {
+        "what": "DUR-001 is only partly closed",
+        "why": "seven constraints still bind at check: with no script, so their path scope is still not derivable",
+        "confidence": "certain"
+      }
+    ]
+  }
+}

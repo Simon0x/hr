@@ -1,0 +1,14 @@
+{
+  "name": "Discovery",
+  "version": "1",
+  "procedure": "departments/discovery.md",
+  "risk": "R0",
+  "reversibility": "revert",
+  "fanOut": {
+    "enabled": true,
+    "leads": ["structural", "mechanism", "workaround"],
+    "concurrency": 3,
+    "leadTokenEstimate": 50000
+  },
+  "verifier": "validate"
+}

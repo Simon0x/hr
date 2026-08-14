@@ -1,0 +1,13 @@
+# Windows/WSL alternate-data-stream artifacts left beside downloaded files
+*:Zone.Identifier
+
+# dev-only type definitions; nothing here is needed at runtime
+node_modules/
+
+# compiled binary — build with `go build -o hr ./cmd/hr`
+/hr
+/hr.exe
+
+# daemon read-model — rebuilt from .hr/artifacts and .hr/ledger.jsonl on
+# every start, never the source of truth
+.hr/index.bbolt

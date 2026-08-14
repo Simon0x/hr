@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hr.dev/profile/v1",
+  "title": "AGENT_PROFILE",
+  "description": "A versioned agent, treated as a product rather than a prompt. The scoring and promotion machinery needs production traffic and is deliberately not built - but recording the shape now means the data exists in the right form when there is traffic, which is the part that cannot be retrofitted.",
+  "type": "object",
+  "required": ["name", "version", "purpose", "owner", "identity", "rollbackTo"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "identity": { "type": "string", "minLength": 1, "description": "Workload identity this runs as, SPIFFE-format." },
+    "capabilities": { "type": "array", "items": { "type": "string" } },
+    "model": { "type": "string", "description": "Selection policy, not a fixed name - the cheapest model that meets the required confidence." },
+    "tools": { "type": "array", "items": { "type": "string" } },
+    "deniedTools": { "type": "array", "items": { "type": "string" }, "description": "What this seat may never do. The grant, not the approval." },
+    "memoryPolicy": { "enum": ["none", "read", "read-write"], "description": "Whether it may write to the memory store. Most seats should not." },
+    "evaluations": {
+      "type": "array",
+      "description": "Empty until there is traffic to evaluate against. Stated as empty rather than omitted, so the gap is visible.",
+      "items": {
+        "type": "object",
+        "required": ["suite", "score", "at"],
+        "additionalProperties": false,
+        "properties": {
+          "suite": { "type": "string" },
+          "score": { "type": "number" },
+          "at": { "type": "string" },
+          "judgeAgreement": { "type": "number", "description": "How often the automated judge agreed with a human on the same items. An uncalibrated judge is an opinion with a number attached." }
+        }
+      }
+    },
+    "limitations": { "type": "array", "items": { "type": "string" }, "description": "What it is known to be bad at. An empty list means nobody looked." },
+    "rollbackTo": { "type": "string", "minLength": 1, "description": "The version to fall back to. Required: a version with no way back is not deployable." }
+  }
+}
